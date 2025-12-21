@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>يومي</title>
+<style>
+:root{
+  --bg:#f9f9f9;
+  --card:#ffffff;
+  --text:#111;
+  --primary:#2563eb;
+}
+.dark{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#e5e7eb;
+  --primary:#38bdf8;
+}
+*{box-sizing:border-box;font-family:system-ui}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+}
+.app{
+  max-width:430px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  padding:16px;
+  font-size:20px;
+  font-weight:bold;
+  text-align:center;
+}
+.nav{
+  display:flex;
+  justify-content:space-around;
+  padding:8px 0;
+  background:var(--card);
+  position:sticky;
+  bottom:0;
+}
+.nav button{
+  background:none;
+  border:none;
+  font-size:16px;
+  color:var(--text);
+}
+.page{
+  flex:1;
+  display:none;
+  padding:16px;
+}
+.page.active{display:block}
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:12px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+input, textarea{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  margin-bottom:8px;
+  background:var(--bg);
+  color:var(--text);
+}
+button.add{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:12px;
+  width:100%;
+  font-size:16px;
+}
+.theme-btn{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:12px;
+  width:100%;
+  margin-top:12px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>تطبيقي اليومي</header>
+
+<!-- المهام -->
+<div class="page active" id="tasksPage">
+  <div class="card">
+    <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة">
+    <button class="add" onclick="addTask()">أضف مهمة</button>
+  </div>
+  <div id="taskList"></div>
+</div>
+
+<!-- الملاحظات -->
+<div class="page" id="notesPage">
+  <div class="card">
+    <textarea id="noteInput" placeholder="اكتب ملاحظة"></textarea>
+    <button class="add" onclick="addNote()">أضف ملاحظة</button>
+  </div>
+  <div id="noteList"></div>
+</div>
+
+<!-- الإعدادات -->
+<div class="page" id="settingsPage">
+  <div class="card">
+    <button class="theme-btn" onclick="toggleTheme()">تبديل الثيم</button>
+  </div>
+</div>
+
+<!-- الشريط السفلي -->
+<div class="nav">
+  <button onclick="showPage('tasksPage')">المهام</button>
+  <button onclick="showPage('notesPage')">الملاحظات</button>
+  <button onclick="showPage('settingsPage')">الإعدادات</button>
+</div>
+</div>
+
+<script>
+// ===== إدارة الصفحات =====
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== إدارة الثيم =====
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
+if(localStorage.getItem('theme')==='dark') document.body.classList.add('dark');
+
+// ===== المهام =====
+let tasks = JSON.parse(localStorage.getItem('tasks')||'[]');
+function renderTasks(){
+  let html = '';
+  tasks.forEach((t,i)=>{
+    html+=`<div class="card">${t} <button onclick="removeTask(${i})">حذف</button></div>`;
+  });
+  document.getElementById('taskList').innerHTML = html;
+}
+function addTask(){
+  let val = document.getElementById('taskInput').value.trim();
+  if(val){ tasks.push(val); document.getElementById('taskInput').value=''; saveTasks(); }
+}
+function removeTask(i){ tasks.splice(i,1); saveTasks(); }
+function saveTasks(){ localStorage.setItem('tasks', JSON.stringify(tasks)); renderTasks(); }
+renderTasks();
+
+// ===== الملاحظات =====
+let notes = JSON.parse(localStorage.getItem('notes')||'[]');
+function renderNotes(){
+  let html = '';
+  notes.forEach((n,i)=>{
+    html+=`<div class="card">${n} <button onclick="removeNote(${i})">حذف</button></div>`;
+  });
+  document.getElementById('noteList').innerHTML = html;
+}
+function addNote(){
+  let val = document.getElementById('noteInput').value.trim();
+  if(val){ notes.push(val); document.getElementById('noteInput').value=''; saveNotes(); }
+}
+function removeNote(i){ notes.splice(i,1); saveNotes(); }
+function saveNotes(){ localStorage.setItem('notes', JSON.stringify(notes)); renderNotes(); }
+renderNotes();
+</script>
+
+</body>
+</html>￼EnterYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>يومي</title>
+<style>
+:root{
+  --bg:#f9f9f9;
+  --card:#ffffff;
+  --text:#111;
+  --primary:#2563eb;
+}
+.dark{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#e5e7eb;
+  --primary:#38bdf8;
+}
+*{box-sizing:border-box;font-family:system-ui}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+}
+.app{
+  max-width:430px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  padding:16px;
+  font-size:20px;
+  font-weight:bold;
+  text-align:center;
+}
+.nav{
+  display:flex;
+  justify-content:space-around;
+  padding:8px 0;
+  background:var(--card);
+  position:sticky;
+  bottom:0;
+}
+.nav button{
+  background:none;
+  border:none;
+  font-size:16px;
+  color:var(--text);
+}
+.page{
+  flex:1;
+  display:none;
+  padding:16px;
+}
+.page.active{display:block}
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:12px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+input, textarea{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  margin-bottom:8px;
+  background:var(--bg);
+  color:var(--text);
+}
+button.add{
+  background:var(--primary);
+
